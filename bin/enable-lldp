@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for i in `cat /proc/net/dev|cut -d : -f 1 |grep en`; do
+    echo "Enabling lldp for $i"
+    lldptool set-lldp -i $i adminStatus=rxtx
+done

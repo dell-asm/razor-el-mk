@@ -22,6 +22,18 @@ cp $TOP_DIR/pkg/razor-mk-agent-${VERSION}.gem \$INSTALL_ROOT/var/tmp
 %end
 
 %post
+cat > /usr/local/bin/enable-lldp <<'CODE'
+$(cat bin/enable-lldp)
+CODE
+chmod +rx /usr/local/bin/enable-lldp
+
+cat > /etc/systemd/system/enable-lldp.service <<EOUNIT
+$(cat etc/enable-lldp.service)
+EOUNIT
+
+systemctl enable lldpad.service
+systemctl enable enable-lldp.service
+
 gem install -l --no-ri --no-rdoc /var/tmp/razor-mk-agent-${VERSION}.gem
 rm -f /var/tmp/razor-mk-agent-${VERSION}.gem
 

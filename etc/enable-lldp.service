@@ -1,0 +1,14 @@
+[Unit]
+Description=Enable LLDP on Ethernet Interfaces
+After=lldpad.target
+
+[Service]
+Type=oneshot
+StandardInput=null
+StandardOutput=syslog
+StandardError=inherit
+SyslogIdentifier=enable-lldp
+ExecStart=/usr/local/bin/enable-lldp
+
+[Install]
+WantedBy=multi-user.target

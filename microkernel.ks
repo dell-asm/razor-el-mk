@@ -48,6 +48,7 @@ acpid
 dmidecode
 # Additional dependency for facter support
 virt-what
+lldpad
 
 # Only needed because livecd-tools runs /usr/bin/firewall-offline-cmd
 # unconditionally; patch submitted upstream. Remove once released version
