@@ -50,6 +50,12 @@ dmidecode
 virt-what
 lldpad
 
+# Fix dmsquash-live problem in CentOS 7.2
+# https://bugzilla.redhat.com/show_bug.cgi?id=1285810
+tar
+gzip
+coreutils
+
 # Only needed because livecd-tools runs /usr/bin/firewall-offline-cmd
 # unconditionally; patch submitted upstream. Remove once released version
 # with it is available
@@ -96,7 +102,6 @@ net-tools
 -prelink
 -setserial
 -ed
--tar
 
 # Remove the authconfig pieces
 -authconfig
