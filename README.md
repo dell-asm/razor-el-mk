@@ -14,11 +14,27 @@ inventory of new machines.
 This section describes how to build an image on a
 [CentOS](http://centos.org/) system.
 
+## Automated script
+
+A script for building the microkernel on a vanilla build of CentOS exists
+in the `bin/` directory, and is linked via [short link](http://pup.pt/build-razor-microkernel).
+Run the script in a vanilla CentOS build with the following command:
+
+`curl -L pup.pt/build-razor-microkernel | sudo bash`
+
+Optionally, if the ruby version has changed from the version specified in the
+Gemfile, this can be specified as a parameter in the script:
+
+`curl -L pup.pt/build-razor-microkernel | sudo bash -s 2.7.0`
+
+## Process explanation
+
 First, install the necessary system dependencies.  The system itself has been
 installed from the network infrastructure server role, with the compilers,
 rpmbuild tools, and system tools group selected.
 
-    yum -y install rake rubygem-bundler livecd-tools
+    yum -y install ruby livecd-tools
+    gem update --system && gem install rake bundler
 
 Disable SELinux when building the image:
 
@@ -44,6 +60,9 @@ you set in `config.yaml`:
 For more information on the tools that do the heavy lifting of building the
 image, see the
 [Fedora Live CD page](https://fedoraproject.org/wiki/How_to_create_and_use_a_Live_CD?rd=How_to_create_and_use_Fedora_Live_CD)
+
+To log into the microkernel, use the root password `thincrust`. Also
+note that logging information will be sent to tty2.
 
 ## Getting in touch
 
