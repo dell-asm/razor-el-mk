@@ -44,6 +44,7 @@ rootfiles
 yum
 vim-minimal
 acpid
+tar
 # RAZOR-145 Add dmidecode for facter support
 dmidecode
 # Additional dependency for facter support
@@ -95,7 +96,6 @@ net-tools
 -prelink
 -setserial
 -ed
--tar
 
 # Remove the authconfig pieces
 -authconfig
@@ -147,6 +147,9 @@ echo " * disable sshd and purge existing SSH host keys"
 rm -f /etc/ssh/ssh_host_*key{,.pub}
 systemctl disable sshd.service
 
+echo " * removing python precompiled *.pyc files"
+find /usr/lib64/python*/ -name *pyc -print0 | xargs -0 rm -f
+
 # This seems to cause 'reboot' resulting in a shutdown on certain platforms
 # See https://tickets.puppetlabs.com/browse/RAZOR-100
 echo " * disable the mei_me module"
@@ -158,8 +161,18 @@ blacklist mei
 install mei /bin/true
 EOMEI
 
+echo " * removing trusted CA certificates"
+truncate -s0 /usr/share/pki/ca-trust-source/ca-bundle.trust.crt
+update-ca-trust
+
 echo " * compressing cracklib dictionary"
 gzip -9 /usr/share/cracklib/pw_dict.pwd
+
+echo " * setting up journald and tty2"
+echo "SystemMaxUse=15M" >> /etc/systemd/journald.conf
+echo "ForwardToSyslog=no" >> /etc/systemd/journald.conf
+echo "ForwardToConsole=yes" >> /etc/systemd/journald.conf
+echo "TTYPath=/dev/tty2" >> /etc/systemd/journald.conf
 
 # 100MB of locale archive is kind unnecessary; we only do en_US.utf8
 # this will clear out everything we don't need; 100MB => 2.1MB.
